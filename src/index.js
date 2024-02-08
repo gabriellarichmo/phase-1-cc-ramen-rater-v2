@@ -8,7 +8,8 @@ const detailName = ramenDetail.querySelector("h2");
 const detailRestaurant = ramenDetail.querySelector("h3");
 const ratingDisplay = document.querySelector('#rating-display');
 const commentDisplay = document.querySelector('#comment-display');
-let ramenArray = null;
+
+let ramenArray = [];
 
 // Callbacks
 const handleClick = (e) => {
@@ -23,11 +24,39 @@ const handleClick = (e) => {
       commentDisplay.innerHTML = ramenData.comment;
 };
 
-const addSubmitListener = (e) => {
+const addSubmitListener = () => {
   // Add code
-  newRamenForm.addEventListener('submit', (e) =>{ e.preventDefault()
-  
+  newRamenForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    
+    const formData = new FormData(newRamenForm);
+
+    
+    const name = formData.get('name');
+    const restaurant = formData.get('restaurant');
+    const image = formData.get('image');
+    const rating = formData.get('rating');
+    const comment = formData.get('new-comment');
+
+    let ramenImg = document.createElement('img');
+    ramenImg.src = image;
+    ramenImg.alt = name;
+    ramenImg.id = ramenArray.length +1;
+
+    ramenArray.push({
+      id: ramenArray.length +1,
+      name: name,
+      restaurant: restaurant,
+      image: image,
+      rating: rating,
+      coment: comment
+    })
+
+    ramenImg.addEventListener('click', (e) => handleClick(e))
+    ramenMenu.append(ramenImg);
   })
+ 
+  
 }
 
 const displayRamens = () => {
@@ -53,9 +82,8 @@ const main = () => {
       displayRamens()
     })
     .catch(err => console.log(err))
+  addSubmitListener()
 
-  // Invoke displayRamens here
-  // Invoke addSubmitListener here
 }
 
 main();
